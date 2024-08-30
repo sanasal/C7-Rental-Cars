@@ -5,7 +5,7 @@ import stripe
 
 #The trusted urls and domains from which requests can come into our applictation 
 SECRET_KEY = os.environ['SECRET']
-ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']]
+ALLOWED_HOSTS = ['c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net']
 CSRF_TRUSTED_ORIGENS = ['https://'+ os.environ['WEBSITE_HOSTNAME']]
 
 DEBUG = False 
@@ -31,10 +31,10 @@ parameters = {pair.split("=")[0]: pair.split("=")[1] for pair in connection_stri
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'c7_motors',
-        'USER' : 'root' ,
+        'NAME': 'c7-rental-cars-database',
+        'USER' : 'dybrwudlpi' ,
         'PASSWORD' : 'SAna2679627',
-        'HOST' : '*', 
+        'HOST' : 'c7-rental-cars-server.mysql.database.azure.com', 
         'PORT' :'3306'
     }
 }
