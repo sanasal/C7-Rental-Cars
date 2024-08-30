@@ -23,7 +23,7 @@ import stripe
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))#MS ADDED
 Temp_Path = os.path.realpath('.')# MS ADDED
-index_path =  os.path.join(os.path.dirname(os.path.dirname(__file__)),'cars_app/templates')
+index_path =  os.path.join(os.path.dirname(os.path.dirname(__file__)),'templates')
 
 
 
@@ -36,7 +36,7 @@ SECRET_KEY = 'django-insecure-2wc&m7e$513s#tnu^6^o9s40x3^mna55od7)c(-f5)6qi!0)&c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok.io']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition

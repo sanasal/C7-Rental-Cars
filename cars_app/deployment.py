@@ -6,7 +6,7 @@ import stripe
 #The trusted urls and domains from which requests can come into our applictation 
 SECRET_KEY = os.environ['SECRET']
 ALLOWED_HOSTS = ['c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net']
-CSRF_TRUSTED_ORIGENS = ['https://'+ os.environ['WEBSITE_HOSTNAME']]
+CSRF_TRUSTED_ORIGENS = ['https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net']
 
 DEBUG = False 
 
@@ -25,7 +25,7 @@ MIDDLEWARE = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR , 'staticfiles')
 
-connection_string = os.environ["AZURE_MYSQL_CONNECTIONSTRING"]
+connection_string = os.environ.get("AZURE_MYSQL_CONNECTIONSTRING")
 parameters = {pair.split("=")[0]: pair.split("=")[1] for pair in connection_string.split(";")}
 
 DATABASES = {
@@ -41,6 +41,9 @@ DATABASES = {
 
 
 #Payment By STRIPE
-STRIPE_PUBLIC_KEY = os.environ['STRIPE_PUBLIC_KEY']
-STRIPE_SECRET_KEY =os.environ['STRIPE_SECRET_KEY']
-STRIPE_WEBHOOK_SECRET = os.environ['STRIPE_WEBHOOK_SECRET']
+STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY =os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
+
+if not STRIPE_PUBLIC_KEY or not STRIPE_SECRET_KEY or not STRIPE_WEBHOOK_SECRET:
+    raise Exception("Stripe environment variables are not set properly.")
