@@ -10,6 +10,29 @@ CSRF_TRUSTED_ORIGINS = ['https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azu
 
 DEBUG = False 
 
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))#MS ADDED
+Temp_Path = os.path.realpath('.')# MS ADDED
+index_path =  os.path.join(os.path.dirname(os.path.dirname(__file__)),'templates')
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(SETTINGS_PATH ,'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -43,7 +66,10 @@ DATABASES = {
         'USER' : 'dybrwudlpi' ,
         'PASSWORD' : 'SAna2679627',
         'HOST' : 'c7-rental-cars-server.mysql.database.azure.com', 
-        'PORT' :'3306'
+        'PORT' :'3306',
+        'OPTIONS': {
+            'ssl':{'ssl': True}   
+        }
     }
 }
 
