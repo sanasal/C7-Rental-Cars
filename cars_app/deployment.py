@@ -6,7 +6,7 @@ import stripe
 #The trusted urls and domains from which requests can come into our applictation 
 SECRET_KEY = os.environ['SECRET']
 ALLOWED_HOSTS = ['c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net']
-CSRF_TRUSTED_ORIGENS = ['https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net']
+CSRF_TRUSTED_ORIGINS = ['https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net']
 
 DEBUG = False 
 
@@ -22,8 +22,16 @@ MIDDLEWARE = [
 ]
 
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATIC_ROOT = os.path.join(BASE_DIR , 'staticfiles')
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATIC_ROOT = os.path.join(BASE_DIR , 'staticfiles')
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS=[os.path.join(BASE_DIR , 'staticfiles')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')  
+
+
+MEDIA_URL='/media/'
+MEDIA_ROOT= os.path.join(BASE_DIR , 'media')  
 
 connection_string = os.environ.get("AZURE_MYSQL_CONNECTIONSTRING")
 parameters = {pair.split("=")[0]: pair.split("=")[1] for pair in connection_string.split(";")}
