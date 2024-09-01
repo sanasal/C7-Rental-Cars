@@ -8,7 +8,7 @@ SECRET_KEY = os.environ['SECRET']
 ALLOWED_HOSTS = ['c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net']
 CSRF_TRUSTED_ORIGINS = ['https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net']
 
-DEBUG = False 
+DEBUG = True
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
