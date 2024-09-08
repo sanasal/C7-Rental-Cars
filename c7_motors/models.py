@@ -36,6 +36,9 @@ class all_car(models.Model):
     price =models.CharField(max_length=100 , blank=True)
     insurnce = models.CharField(max_length=100 , blank=True)
 
+    def __str__(self):
+        return f"{self.name}"
+
 class news(models.Model):
     name = models.CharField(max_length=100 , blank=True)
     img = models.ImageField(default = '' , blank=True)
@@ -53,6 +56,9 @@ class news(models.Model):
     miles = models.CharField(max_length=100 , blank=True)
     price =models.CharField(max_length=100 , blank=True)
     insurnce = models.CharField(max_length=100 , blank=True)
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class economy_car(models.Model):
@@ -72,6 +78,9 @@ class economy_car(models.Model):
     miles = models.CharField(max_length=100 , blank=True)
     price =models.CharField(max_length=100 , blank=True)
     insurnce = models.CharField(max_length=100 , default='')
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class premium_car(models.Model):
@@ -93,6 +102,10 @@ class premium_car(models.Model):
     insurnce = models.CharField(max_length=100 ,default='')
 
 
+    def __str__(self):
+        return f"{self.name}"
+
+
 class luxury_car(models.Model):
     name = models.CharField(max_length=100 , blank=True)
     img = models.ImageField(default = '' , blank=True)
@@ -112,7 +125,8 @@ class luxury_car(models.Model):
     insurnce = models.CharField(max_length=100 , blank=True , default='')
 
 
-
+    def __str__(self):
+        return f"{self.name}"
    
 class Cart(models.Model):
     id = models.UUIDField(default=uuid.uuid4 , primary_key=True)
