@@ -146,6 +146,14 @@ class economy_reservation(models.Model):
     def __str__(self):
        return self.car.name
 
+    def __str__(self):
+       return self.car.price
+
+    def __str__(self):
+       return self.car.insurnce
+
+    
+
 class luxury_reservation(models.Model):
     lux_car = models.ForeignKey(luxury_car, on_delete = models.CASCADE , related_name='items2' , null=True)
     cart = models.ForeignKey(Cart, on_delete = models.CASCADE , related_name='cartitems2')
