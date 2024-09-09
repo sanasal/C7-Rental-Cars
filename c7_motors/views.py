@@ -275,28 +275,3 @@ def delete_item4(request):
     return JsonResponse('Delete Item Done' , safe= False)
 
 
-#payment method 
-@login_required(login_url='/log_in/')
-def payment_page(request):
-    cart = None        
-    cartitems = []
-    cartitems2 = []
-    cartitems3 = []
-    cartitems4 = []
-
-    if request.user.is_authenticated:
-        cart , created = Cart.objects.get_or_create(user =request.user , completed = False)
-        cartitems = cart.cartitems.all()
-        cartitems2= cart.cartitems2.all()
-        cartitems3 = cart.cartitems3.all()
-        cartitems4 = cart.cartitems4.all()
-
-    context = {
-      'cart' : cart ,
-      'items':cartitems ,  
-      'items2':cartitems2 ,
-      'items3':cartitems3 , 
-      'items4':cartitems4
-    }
-
-    return render(request , 'payment.html' , context)
