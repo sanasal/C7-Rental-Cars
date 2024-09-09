@@ -139,8 +139,6 @@ class Cart(models.Model):
 
 class economy_reservation(models.Model):
     car = models.ForeignKey(economy_car, on_delete=models.CASCADE , related_name='items')
-    price = models.ForeignKey(economy_car, on_delete=models.CASCADE , related_name='price_items')
-    insurnce = models.ForeignKey(economy_car, on_delete=models.CASCADE , related_name='insurnce_items')
     cart = models.ForeignKey(Cart, on_delete = models.CASCADE , related_name='cartitems')
 
     def __str__(self):
