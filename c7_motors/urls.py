@@ -22,7 +22,6 @@ urlpatterns = [
     path('log_out/' , views.log_out , name='log_out'),  
     path('contact_us/' , views.contact_us , name='contact_us'),
     path('Manage_Your_Book/' , views.reservation , name='reservation'),
-    path('Payment/' , views.payment_page , name='payment'), 
     path('economy_cars/add_to_cart/' , views.add_to_cart , name='add'),
     path('luxury_cars/add_to_cart2/' , views.add_to_cart2 , name='add2'),
     path('premium_cars/add_to_cart3/' , views.add_to_cart3 , name='add3'),
