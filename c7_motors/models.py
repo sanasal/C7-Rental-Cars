@@ -16,7 +16,7 @@ class customers_data(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     date = models.DateTimeField(auto_now_add=True)
-
+    ''''
     def calculate_total_days(self):
         return (self.end_date - self.start_date).days + 1 
     
@@ -41,7 +41,7 @@ class customers_data(models.Model):
 
         return total_price_after_discount
 
-
+    '''''
     def __str__(self):
         return f"{self.cars} - {self.name} - ${self.amount}"
 
