@@ -13,7 +13,34 @@ class customers_data(models.Model):
     nationality = models.TextField(max_length=300, default='', blank=True)
     mobile_phone = models.TextField(blank=True, default='')
     amount = models.TextField(blank=True,default='')
+    start_date = models.DateField()
+    end_date = models.DateField()
     date = models.DateTimeField(auto_now_add=True)
+
+    def calculate_total_days(self):
+        return (self.end_date - self.start_date).days + 1 
+    
+
+    def calculate_total_price(self):
+        days = self.calculate_total_days()
+        car_price = self.car.price * days
+        insurance = self.car.insurance
+        total_dicount = 0
+        if days >= 7:
+            total_dicount=10
+        if days >= 30:
+            total_dicount=30
+        if days >= 90 :
+            total_dicount=50
+        if days >= 365:
+            total_dicount=65
+        discount = total_dicount / 100
+
+        total_price = car_price + insurance
+        total_price_after_discount = total_price - (total_price * discount)
+
+        return total_price_after_discount
+
 
     def __str__(self):
         return f"{self.cars} - {self.name} - ${self.amount}"
@@ -38,28 +65,6 @@ class all_car(models.Model):
 
     def __str__(self):
         return f"{self.name}"
-
-class news(models.Model):
-    name = models.CharField(max_length=100 , blank=True)
-    img = models.ImageField(default = '' , blank=True)
-    seats = models.IntegerField()
-    
-    MANUAL = 'Manual'
-    AUTOMATIC = 'Automatic'
-    GEAR_CHOICES = [
-        (MANUAL, 'Manual Transmission'),
-        (AUTOMATIC, 'Automatic Transmission'),
-    ]
-    
-    gear = models.CharField(max_length=20, choices=GEAR_CHOICES)
-    year = models.CharField(max_length=20 , default='')
-    miles = models.CharField(max_length=100 , blank=True)
-    price =models.CharField(max_length=100 , blank=True)
-    insurnce = models.CharField(max_length=100 , blank=True)
-
-    def __str__(self):
-        return f"{self.name}"
-
 
 class economy_car(models.Model):
     name = models.CharField(max_length=100 , blank=True)

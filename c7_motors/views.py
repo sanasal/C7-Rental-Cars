@@ -275,3 +275,16 @@ def delete_item4(request):
     return JsonResponse('Delete Item Done' , safe= False)
 
 
+from django.shortcuts import render, get_object_or_404
+
+def car_booking_view(request):
+    if request.method == 'POST':
+        form =forms(request.POST)        
+        if form.is_valid():
+            booking = form.save(commit=False)
+            total_price = customers_data.calculate_total_price()
+            return render(request, 'reservation.html', {'booking': booking, 'total_price': total_price})
+    else:
+        form = forms()
+    
+    return render(request, 'reservation.html', {'form': form})

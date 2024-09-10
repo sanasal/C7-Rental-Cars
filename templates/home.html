@@ -123,7 +123,7 @@
         </div>
         <!-- Navbar & Hero End -->
          
-        <!-- Carousel Start -->
+        <!-- Carousel Start 
         <div class="header-carousel">
             <div id="carouselId" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
                 <div class="carousel-inner mb-5" role="listbox">
@@ -427,7 +427,55 @@
                 </div>
             </div>
         </div>
-        <!-- Carousel End -->
+         Carousel End -->
+
+        <!-- Car categories Start -->
+        <div class="container-fluid categories py-5">
+            <div class="container py-5">
+                <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+                    <h1 class="display-5 text-capitalize mb-3">Cars <span style="color: rgb(255, 215, 0);">Categories</span></h1>
+                </div>
+                <div id="car_categories" class="categories-carousel owl-carousel wow fadeInUp" data-wow-delay="0.1s">
+                    {% for car in  all_car %}
+                    <div class="categories-item p-4">
+                        <div class="categories-item-inner">
+                            <div class="categories-img rounded-top">
+                                <img src="{{car.img.url}}" class="img-fluid w-100 rounded-top" alt="">
+                            </div>
+                            <div class="categories-content rounded-bottom p-4">
+                                <h4>{{ car.name }}</h4>
+                                <div class="mb-4">
+                                    <h4 class="bg-white text-dark rounded-pill py-2 px-4 mb-0">${{car.price}}\per day</h4>
+                                </div>
+                                <div class="row gy-2 gx-0 text-center mb-4">
+                                    <div class="col-4 border-end border-white">
+                                        <i class="fa fa-users text-dark"></i> <span class="text-body ms-1">{{car.seats}} Seat</span>
+                                    </div>
+                                    <div class="col-4 border-end border-white">
+                                        <i class="fa fa-car text-dark"></i> <span class="text-body ms-1">{{car.gear}}</span>
+                                    </div>
+                                    <div class="col-4">
+                                        <i class="fa fa-gas-pump text-dark"></i> <span class="text-body ms-1">{{car.miles}}</span>
+                                    </div>
+                                    <div class="col-4 border-end border-white">
+                                        <i class="fa fa-car text-dark"></i> <span class="text-body ms-1">{{car.year}}</span>
+                                    </div>
+                                    <div class="col-4 border-end border-white">
+                                        <i class="fa fa-cogs text-dark"></i> <span class="text-body ms-1">${{car.insurance}}</span>
+                                    </div>
+                                    <div class="col-4">
+                                        <i class="fa fa-road text-dark"></i> <span class="text-body ms-1">{{car.miles}}</span>
+                                    </div>
+                                </div>
+                                <button class="btn add btn-dark rounded-pill d-flex justify-content-center py-3" value="{{ car.id }}">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- Car categories End -->
 
         <!-- Features Start -->
         <div class="container-fluid mt-5 feature py-5">
@@ -679,53 +727,6 @@
             </div>
         </div>
         <!-- Services End -->
-        <!-- Car categories Start -->
-        <div class="container-fluid categories py-5">
-            <div class="container py-5">
-                <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
-                    <h1 class="display-5 text-capitalize mb-3">Cars <span style="color: rgb(255, 215, 0);">Categories</span></h1>
-                </div>
-                <div id="car_categories" class="categories-carousel owl-carousel wow fadeInUp" data-wow-delay="0.1s">
-                    {% for car in  all_car %}
-                    <div class="categories-item p-4">
-                        <div class="categories-item-inner">
-                            <div class="categories-img rounded-top">
-                                <img src="{{car.img.url}}" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="categories-content rounded-bottom p-4">
-                                <h4>{{ car.name }}</h4>
-                                <div class="mb-4">
-                                    <h4 class="bg-white text-dark rounded-pill py-2 px-4 mb-0">${{car.price}}\per day</h4>
-                                </div>
-                                <div class="row gy-2 gx-0 text-center mb-4">
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-users text-dark"></i> <span class="text-body ms-1">{{car.seats}} Seat</span>
-                                    </div>
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-car text-dark"></i> <span class="text-body ms-1">{{car.gear}}</span>
-                                    </div>
-                                    <div class="col-4">
-                                        <i class="fa fa-gas-pump text-dark"></i> <span class="text-body ms-1">{{car.miles}}</span>
-                                    </div>
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-car text-dark"></i> <span class="text-body ms-1">{{car.year}}</span>
-                                    </div>
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-cogs text-dark"></i> <span class="text-body ms-1">${{car.insurance}}</span>
-                                    </div>
-                                    <div class="col-4">
-                                        <i class="fa fa-road text-dark"></i> <span class="text-body ms-1">{{car.miles}}</span>
-                                    </div>
-                                </div>
-                                <button class="btn add btn-dark rounded-pill d-flex justify-content-center py-3" value="{{ car.id }}">Book Now</button>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-        <!-- Car categories End -->
 
         <!-- Car Steps Start -->
         <div class="container-fluid steps py-5">
@@ -757,56 +758,6 @@
             </div>
         </div>
         <!-- Car Steps End -->
-
-        <!-- Blog Start -->
-        <div class="container-fluid categories py-5">
-            <div class="container py-5">
-                <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
-                    <h1 class="display-5 text-capitalize mb-3">C7 Renatl Cars<span style="color: rgb(255, 215, 0);"> News</span></h1>
-                    <p>“Stay informed with the latest updates from C7 Renatl Cars. Our comprehensive news coverage brings you insights, industry trends, and exciting announcements.” </p>
-                </div>
-                <div class="categories-carousel owl-carousel wow fadeInUp" data-wow-delay="0.1s">
-                    {% for car in news %}
-                    <div class="categories-item p-4">
-                        <div class="categories-item-inner">
-                            <div class="categories-img rounded-top">
-                                <img src="{{car.img.url}}" class="img-fluid w-100 rounded-top" alt="">
-                            </div>
-                            <div class="categories-content rounded-bottom p-4">
-                                <h4>{{ car.name }}</h4>
-                                <div class="mb-4">
-                                    <h4 class="bg-white text-primary rounded-pill py-2 px-4 mb-0">{{car.price}}</h4>
-                                </div>
-                                <div class="row gy-2 gx-0 text-center mb-4">
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-users text-dark"></i> <span class="text-body ms-1">{{car.seats}} Seat</span>
-                                    </div>
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-car text-dark"></i> <span class="text-body ms-1">{{car.gear}}</span>
-                                    </div>
-                                    <div class="col-4">
-                                        <i class="fa fa-gas-pump text-dark"></i> <span class="text-body ms-1">{{car.miles}}</span>
-                                    </div>
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-car text-dark"></i> <span class="text-body ms-1">{{car.year}}</span>
-                                    </div>
-                                    <div class="col-4 border-end border-white">
-                                        <i class="fa fa-cogs text-dark"></i> <span class="text-body ms-1">{{car.insurance}}</span>
-                                    </div>
-                                    <div class="col-4">
-                                        <i class="fa fa-road text-dark"></i> <span class="text-body ms-1">{{car.miles}}</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="btn btn-dark rounded-pill d-flex justify-content-center py-3">Book Now</a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-
-        <!-- Blog End -->
 
         <!-- Testimonial Start -->
         <div class="container-fluid testimonial pb-5">
