@@ -13,8 +13,8 @@ class customers_data(models.Model):
     nationality = models.TextField(max_length=300, default='', blank=True)
     mobile_phone = models.TextField(blank=True, default='')
     amount = models.TextField(blank=True,default='')
-    start_date = models.DateField()
-    end_date = models.DateField()
+    #start_date = models.DateField()
+    #end_date = models.DateField()
     date = models.DateTimeField(auto_now_add=True)
     ''''
     def calculate_total_days(self):
