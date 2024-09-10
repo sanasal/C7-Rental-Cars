@@ -274,8 +274,9 @@ def delete_item4(request):
         cart_items.delete()
     return JsonResponse('Delete Item Done' , safe= False)
 
-
+'''''
 from django.shortcuts import render, get_object_or_404
+
 
 def car_booking_view(request):
     if request.method == 'POST':
@@ -288,3 +289,4 @@ def car_booking_view(request):
         form = forms()
     
     return render(request, 'reservation.html', {'form': form})
+'''''
