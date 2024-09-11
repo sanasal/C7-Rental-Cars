@@ -40,19 +40,6 @@ from django.conf import settings
 
 
 def home(request):
-    cart = None        
-    cartitems = []
-    cartitems2 = []
-    cartitems3 = []
-    cartitems4 = []
-
-    if request.user.is_authenticated:
-        cart , created = Cart.objects.get_or_create(user =request.user , completed = False)
-        cartitems = cart.cartitems.all()
-        cartitems2= cart.cartitems2.all()
-        cartitems3 = cart.cartitems3.all()
-        cartitems4 = cart.cartitems4.all()
-        
     premiumcars = premium_car.objects.all()
     luxurycars= luxury_car.objects.all()
     economycars = economy_car.objects.all()
@@ -61,12 +48,7 @@ def home(request):
       'premium_car' : premiumcars ,
       'luxury_car' : luxurycars,
       'economy_car' : economycars,
-      'all_car': cars,
-      'cart' : cart ,
-      'items':cartitems ,  
-      'items2':cartitems2 ,
-      'items3':cartitems3 , 
-      'items4':cartitems4}   
+      'all_car': cars,}   
     return render(request, 'home.html' , context )
 
 
@@ -74,11 +56,9 @@ def home(request):
 def contact_us(request):
     return render(request , 'contact_us.html')
 
-@login_required(login_url='/log_in/')
 def service(request):
     return render(request , 'service.html')
 
-@login_required(login_url='/log_in/')
 def feature(request):
     return render(request , 'feature.html')
 

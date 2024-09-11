@@ -12,10 +12,11 @@ class customers_data(models.Model):
     email = models.TextField(max_length=300, default='', blank=True)
     nationality = models.TextField(max_length=300, default='', blank=True)
     mobile_phone = models.TextField(blank=True, default='')
-    amount = models.TextField(blank=True,default='')
-    #start_date = models.DateField()
-    #end_date = models.DateField()
-    date = models.DateTimeField(auto_now_add=True)
+    price = models.TextField(blank=True,default='')
+    pick_up_date = models.DateField(blank=True,default='')
+    pick_up_time = models.TimeField(blank=True,default='')
+    drop_off_date = models.DateField(blank=True,default='')
+    drop_off_time = models.TimeField(blank=True,default='')
     ''''
     def calculate_total_days(self):
         return (self.end_date - self.start_date).days + 1 
@@ -43,7 +44,7 @@ class customers_data(models.Model):
 
     '''''
     def __str__(self):
-        return f"{self.cars} - {self.name} - ${self.amount}"
+        return f"{self.cars} - {self.name} - ${self.price}"
 
 class all_car(models.Model):
     name = models.CharField(max_length=100 , blank=True)
