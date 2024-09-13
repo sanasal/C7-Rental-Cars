@@ -680,104 +680,6 @@
             window.location.reload('http://127.0.0.1:8000/'); 
         }, 200);
         } 
-        let delete_button = document.querySelectorAll('.delete_item')
-        delete_button.forEach(btn => {
-            btn.addEventListener('click' , deleteItem)
-        })
-        function deleteItem(e){
-            let car_id = e.target.dataset.carId
-            let url = 'delete/'
-            let data = { id:car_id }
-            
-            fetch(url , {
-                method : 'POST' ,
-                headers : {"Content-Type" : "application/json" , "X-CSRFToken" : csrftoken} ,
-                body : JSON.stringify(data)
-            }).then(res => res.json())
-            .then(data => {
-                console.log(data)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-            setTimeout(function() {
-                window.location.reload('http://127.0.0.1:8000/'); 
-            }, 200);
-        }
-        let delete_button2 = document.querySelectorAll('.delete_item2')
-        delete_button2.forEach(btn => {
-            btn.addEventListener('click' , deleteItem2)
-        })
-        function deleteItem2(e){
-            let car_id = e.target.dataset.carId
-            let url = 'delete2/'
-            let data = { id:car_id }
-            
-            fetch(url , {
-                method : 'POST' ,
-                headers : {"Content-Type" : "application/json" , "X-CSRFToken" : csrftoken} ,
-                body : JSON.stringify(data)
-            }).then(res => res.json())
-            .then(data => {
-                console.log(data)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-            setTimeout(function() {
-                window.location.reload('http://127.0.0.1:8000/'); 
-            }, 200);
-        }
-        let delete_button3 = document.querySelectorAll('.delete_item3')
-        delete_button3.forEach(btn => {
-            btn.addEventListener('click' , deleteItem3)
-        })
-        function deleteItem3(e){
-            let car_id = e.target.dataset.carId
-            let url = 'delete3/'
-            let data = { id:car_id }
-            
-            fetch(url , {
-                method : 'POST' ,
-                headers : {"Content-Type" : "application/json" , "X-CSRFToken" : csrftoken} ,
-                body : JSON.stringify(data)
-            }).then(res => res.json())
-            .then(data => {
-                console.log(data)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-            setTimeout(function() {
-                window.location.reload('http://127.0.0.1:8000/'); 
-            }, 200);
-        }
-        let delete_button4 = document.querySelectorAll('.delete_item4')
-        delete_button4.forEach(btn => {
-            btn.addEventListener('click' , deleteItem4)
-        })
-        function deleteItem4(e){
-            let car_id = e.target.dataset.carId
-            let url = 'delete4/'
-            let data = { id:car_id }
-            
-            fetch(url , {
-                method : 'POST' ,
-                headers : {"Content-Type" : "application/json" , "X-CSRFToken" : csrftoken} ,
-                body : JSON.stringify(data)
-            }).then(res => res.json())
-            .then(data => {
-                console.log(data)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-            setTimeout(function() {
-                window.location.reload('http://127.0.0.1:8000/'); 
-            }, 200);
-        }
-    </script>
-    <script>
         function addDataCustomers() {
             var formData = new FormData(document.getElementById('reservation-form'));
             
@@ -802,25 +704,6 @@
             };
             xhr.send(formData);
         }
-
-        (function() {
-            // https://dashboard.emailjs.com/admin/account
-            emailjs.init({
-                publicKey: "sLqDm49VYqLQbcqrV",
-            });
-        })();
-        window.onload = function() {
-            document.getElementById('reservation-form').addEventListener('submit', function(event) {
-                event.preventDefault();
-                emailjs.sendForm('service_bxwmkdj', 'template_xt5y7l5', this)
-                    .then(() => {
-                        alert('Thanks you , your message has been sent.');
-                        addDataCustomers(); // Call the addDataCustomers function
-                    }, (error) => {
-                        alert('your message has not been sent,' , error);
-                    });
-            });
-        };
     </script>
     
 

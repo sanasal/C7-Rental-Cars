@@ -1,3 +1,4 @@
+#models.py
 from django.db import models
 from xml.parsers.expat import model
 from django.db import models
@@ -13,10 +14,10 @@ class customers_data(models.Model):
     nationality = models.TextField(max_length=300, default='', blank=True)
     mobile_phone = models.TextField(blank=True, default='')
     price = models.TextField(blank=True,default='')
-    pick_up_date = models.DateField(blank=True,default='')
-    pick_up_time = models.TimeField(blank=True,default='')
-    drop_off_date = models.DateField(blank=True,default='')
-    drop_off_time = models.TimeField(blank=True,default='')
+   # pick_up_date = models.DateField(blank=True, null=True, default=None)
+   # pick_up_time = models.TimeField(blank=True, null=True, default=None)
+   # drop_off_date = models.DateField(blank=True, null=True, default=None)
+   # drop_off_time = models.TimeField(blank=True, null=True, default=None)
     ''''
     def calculate_total_days(self):
         return (self.end_date - self.start_date).days + 1 
