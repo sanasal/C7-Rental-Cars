@@ -142,7 +142,7 @@ def add_customers_data(request):
             print("Form is not valid")
     else:
       form = forms.Customers_Data()
-    return redirect('c7_motors:reservation')
+    return render('reservation.html')
 
 @login_required(login_url='/log_in/')
 def reservation(request):

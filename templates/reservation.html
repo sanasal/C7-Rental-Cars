@@ -615,7 +615,7 @@
     <script>
         function addDataCustomers() {
             var formData = new FormData(document.getElementById('reservation-form'));
-
+        
             // Get the selected car values
             var carItems = document.querySelectorAll('#cars');
             var carValues = [];
@@ -625,19 +625,22 @@
             
             // Add the car values to the FormData object
             formData.set('cars', carValues.join(', '));
-
-
+        
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/add_data/', true);
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     console.log('Data sent successfully');
                 } else {
-                    console.log('Error sending data');
+                    console.error('Error sending data: ' + xhr.status + ' ' + xhr.statusText);
                 }
+            };
+            xhr.onerror = function() {
+                console.error('Request failed');
             };
             xhr.send(formData);
         }
+        
         (function() {
             // https://dashboard.emailjs.com/admin/account
             emailjs.init({
