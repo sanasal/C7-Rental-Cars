@@ -535,7 +535,7 @@
                 console.log(error)
             })
             setTimeout(function() {
-                window.location.reload('http://127.0.0.1:8000/Manage_Your_Book/'); 
+                window.location.reload('https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net/log_in/?next=/Manage_Your_Book/'); 
             }, 200);
         }
         let delete_button2 = document.querySelectorAll('.delete_item2')
@@ -559,7 +559,7 @@
                 console.log(error)
             })
             setTimeout(function() {
-                window.location.reload('http://127.0.0.1:8000/Manage_Your_Book/'); 
+                window.location.reload('https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net/log_in/?next=/Manage_Your_Book/'); 
             }, 200);
         }
         let delete_button3 = document.querySelectorAll('.delete_item3')
@@ -583,7 +583,7 @@
                 console.log(error)
             })
             setTimeout(function() {
-                window.location.reload('http://127.0.0.1:8000/Manage_Your_Book/'); 
+                window.location.reload('https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net/log_in/?next=/Manage_Your_Book/'); 
             }, 200);
         }
 
@@ -608,26 +608,30 @@
                 console.log(error)
             })
             setTimeout(function() {
-                window.location.reload('http://127.0.0.1:8000/Manage_Your_Book/'); 
+                window.location.reload('https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net/log_in/?next=/Manage_Your_Book/'); 
             }, 200);
         }
     </script>
     <script>
         function addDataCustomers() {
             var formData = new FormData(document.getElementById('reservation-form'));
-        
+            console.log('1');
             // Get the selected car values
             var carItems = document.querySelectorAll('#cars');
+            console.log('2')
             var carValues = [];
+            console.log('3')
             for (var i = 0; i < carItems.length; i++) {
                 carValues.push(carItems[i].value);
             }
-            
+            console.log('4')
             // Add the car values to the FormData object
             formData.set('cars', carValues.join(', '));
         
             var xhr = new XMLHttpRequest();
+            console.log('5')
             xhr.open('POST', '/add_data/', true);
+            console.log('6')
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     console.log('Data sent successfully');
@@ -635,9 +639,11 @@
                     console.error('Error sending data: ' + xhr.status + ' ' + xhr.statusText);
                 }
             };
+            console.log('7')
             xhr.onerror = function() {
                 console.error('Request failed');
             };
+            console.log('8')
             xhr.send(formData);
         }
         
