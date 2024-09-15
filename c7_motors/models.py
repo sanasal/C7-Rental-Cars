@@ -14,10 +14,10 @@ class customers_data(models.Model):
     nationality = models.TextField(max_length=300, default='', blank=True)
     mobile_phone = models.TextField(blank=True, default='')
     price = models.TextField(blank=True,default='')
-   # pick_up_date = models.DateField(blank=True, null=True, default=None)
-   # pick_up_time = models.TimeField(blank=True, null=True, default=None)
-   # drop_off_date = models.DateField(blank=True, null=True, default=None)
-   # drop_off_time = models.TimeField(blank=True, null=True, default=None)
+    pick_up_date = models.DateField(null=True, blank=True)
+    pick_up_time = models.TimeField(null=True, blank=True)
+    drop_off_date = models.DateField(null=True, blank=True)
+    drop_off_time = models.TimeField(null=True, blank=True)
     ''''
     def calculate_total_days(self):
         return (self.end_date - self.start_date).days + 1 
