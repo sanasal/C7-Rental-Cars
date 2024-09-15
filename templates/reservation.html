@@ -615,23 +615,17 @@
     <script>
         function addDataCustomers() {
             var formData = new FormData(document.getElementById('reservation-form'));
-            console.log('1');
             // Get the selected car values
             var carItems = document.querySelectorAll('#cars');
-            console.log('2')
             var carValues = [];
-            console.log('3')
             for (var i = 0; i < carItems.length; i++) {
                 carValues.push(carItems[i].value);
             }
-            console.log('4')
             // Add the car values to the FormData object
             formData.set('cars', carValues.join(', '));
         
             var xhr = new XMLHttpRequest();
-            console.log('5')
             xhr.open('POST', '/add_data/', true);
-            console.log('6')
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     console.log('Data sent successfully');
@@ -639,11 +633,9 @@
                     console.error('Error sending data: ' + xhr.status + ' ' + xhr.statusText);
                 }
             };
-            console.log('7')
             xhr.onerror = function() {
                 console.error('Request failed');
             };
-            console.log('8')
             xhr.send(formData);
         }
         

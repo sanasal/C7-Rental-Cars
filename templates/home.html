@@ -618,26 +618,6 @@
     <script src="{% static 'lib/counterup/counterup.min.js'%}"></script>
     <script src="{% static 'lib/owlcarousel/owl.carousel.min.js'%}"></script>
     <script>
-        (function() {
-            // https://dashboard.emailjs.com/admin/account
-            emailjs.init({
-                publicKey: "sLqDm49VYqLQbcqrV",
-            });
-        })();
-        window.onload = function() {
-            document.getElementById('reservation-form').addEventListener('submit', function(event) {
-                event.preventDefault();
-                // these IDs from the previous steps
-                emailjs.sendForm('service_bxwmkdj' ,'template_xt5y7l5', this)
-                    .then(() => {
-                        alert('Thanks you , your message has been sent.');
-                    }, (error) => {
-                        alert('your message has not been sent,' , error);
-                });
-            });
-        }
-    </script>
-    <script>
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -677,33 +657,9 @@
             console.log(error)
         })
         setTimeout(function() {
-            window.location.reload('http://127.0.0.1:8000/'); 
+            window.location.reload('https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net/Manage_Your_Book/'); 
         }, 200);
         } 
-        function addDataCustomers() {
-            var formData = new FormData(document.getElementById('reservation-form'));
-            
-            // Get the selected car values
-            var carItems = document.querySelectorAll('#cars');
-            var carValues = [];
-            for (var i = 0; i < carItems.length; i++) {
-                carValues.push(carItems[i].value);
-            }
-             
-            // Add the car values to the FormData object
-            formData.set('cars', carValues.join(', '));
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/add_data/', true);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    console.log('Data sent successfully');
-                } else {
-                    console.log('Error sending data');
-                }
-            };
-            xhr.send(formData);
-        }
     </script>
     
 
