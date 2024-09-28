@@ -5,7 +5,7 @@ from django.contrib.auth import login , logout
 #CSRF protection
 from django.views.decorators.csrf import csrf_protect
 from . import forms
-from .models import all_car, premium_car, categories_reservation , luxury_car , economy_car, Cart, economy_reservation , luxury_reservation, premium_reservation
+from .models import customers_data, all_car, premium_car, categories_reservation , luxury_car , economy_car, Cart, economy_reservation , luxury_reservation, premium_reservation
 from django.http import HttpResponse
 from django.template import Template , Context
 from django.http import JsonResponse
@@ -130,19 +130,32 @@ def log_out(request):
 
 
 @login_required(login_url='/log_in/')
-def add_customers_data(request):   
+def add_customers_data(request):
     if request.method == 'POST':
-        form = forms.Customers_Data(request.POST)                     
-        if form.is_valid():    
+        form = forms.Customers_Data(request.POST)
+        if form.is_valid():
             instance = form.save(commit=False)
-            instance.writer = request.user   
+            instance.writer = request.user
+            instance.user = request.user
             instance.save()
-            return redirect('c7_motors:add_customers_data')
+            
+            # Fetch the latest price after saving the form data
+            customer_book_price = customers_data.objects.filter(user=request.user).order_by('-id').first()
+            if customer_book_price:
+                total_price = customer_book_price.total_price()
+            else:
+                total_price = None
+            
+            # Return the total price in the JSON response
+            return JsonResponse({
+                'success': True,
+                'total_price': total_price
+            })
         else:
-            print("Form is not valid")
-    else:
-      form = forms.Customers_Data()
-    return redirect('c7_motors:reservation')
+            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+    return JsonResponse({'success': False}, status=400)
+
+
 
 @login_required(login_url='/log_in/')
 def reservation(request):
@@ -151,16 +164,43 @@ def reservation(request):
     cartitems2 = []
     cartitems3 = []
     cartitems4 = []
+    customer_book_price = None
 
     if request.user.is_authenticated:
-        cart , created = Cart.objects.get_or_create(user =request.user , completed = False)
+        try:
+            customer_book_price = customers_data.objects.filter(user=request.user).order_by('-id').first()
+            if customer_book_price is not None:
+                print("Before calling total_price():", customer_book_price.price)
+                customer_book_price.total_price()
+                print("After calling total_price():", customer_book_price.price)
+                customer_book_price.refresh_from_db()  # Refresh the object from the database
+                print("After refreshing from database:", customer_book_price.price)
+                total_price = customer_book_price.price
+            else:
+                total_price = None
+        except customers_data.DoesNotExist:
+            customer_book_price = None
+            total_price = None
+
+        cart, created = Cart.objects.get_or_create(user=request.user, completed=False)
         cartitems = cart.cartitems.all()
-        cartitems2= cart.cartitems2.all()
+        cartitems2 = cart.cartitems2.all()
         cartitems3 = cart.cartitems3.all()
         cartitems4 = cart.cartitems4.all()
-    context = {'cart' : cart , 'items':cartitems ,  'items2':cartitems2 ,'items3':cartitems3 , 'items4':cartitems4 }
+    
+    context = {
+        'cart': cart,
+        'items': cartitems,
+        'items2': cartitems2,
+        'items3': cartitems3,
+        'items4': cartitems4,
+        'customer_book_price': customer_book_price,
+        'total_price': total_price
+    }
 
-    return render(request , 'reservation.html' , context)
+    return render(request, 'reservation.html', context)
+
+
 
 
 def add_to_cart(request):
@@ -253,20 +293,3 @@ def delete_item4(request):
         cart_items = categories_reservation.objects.filter(cart=cart , cate_car_id =car_id) 
         cart_items.delete()
     return JsonResponse('Delete Item Done' , safe= False)
-
-'''''
-from django.shortcuts import render, get_object_or_404
-
-
-def car_booking_view(request):
-    if request.method == 'POST':
-        form =forms(request.POST)        
-        if form.is_valid():
-            booking = form.save(commit=False)
-            total_price = customers_data.calculate_total_price()
-            return render(request, 'reservation.html', {'booking': booking, 'total_price': total_price})
-    else:
-        form = forms()
-    
-    return render(request, 'reservation.html', {'form': form})
-'''''
