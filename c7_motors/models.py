@@ -4,7 +4,6 @@ from xml.parsers.expat import model
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
-
 # Create your models here
 
 class Cart(models.Model):
@@ -86,6 +85,14 @@ class all_car(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+class Categories_Booking(models.Model):
+    cate_car = models.ForeignKey(all_car, on_delete=models.CASCADE, related_name='categories_bookings')
+    pick_up_date = models.DateField()
+    drop_off_date = models.DateField()
+
+    def __str__(self):
+        return f"Booking for {self.cate_car.name} from {self.pick_up_date} to {self.drop_off_date}"
+
 class economy_car(models.Model):
     name = models.CharField(max_length=100 , blank=True)
     img = models.ImageField(default = '' , blank=True)
@@ -107,6 +114,13 @@ class economy_car(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+class Booking(models.Model):
+    car = models.ForeignKey(economy_car, on_delete=models.CASCADE, related_name='bookings')
+    pick_up_date = models.DateField()
+    drop_off_date = models.DateField()
+
+    def __str__(self):
+        return f"Booking for {self.car.name} from {self.pick_up_date} to {self.drop_off_date}"
 
 class premium_car(models.Model):
     name = models.CharField(max_length=100 , blank=True)
@@ -130,6 +144,13 @@ class premium_car(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+class Premium_Booking(models.Model):
+    pre_car = models.ForeignKey(premium_car, on_delete=models.CASCADE, related_name='premium_bookings')
+    pick_up_date = models.DateField()
+    drop_off_date = models.DateField()
+
+    def __str__(self):
+        return f"Booking for {self.pre_car.name} from {self.pick_up_date} to {self.drop_off_date}"
 
 class luxury_car(models.Model):
     name = models.CharField(max_length=100 , blank=True)
@@ -151,9 +172,15 @@ class luxury_car(models.Model):
 
 
     def __str__(self):
-        return f"{self.name}"
-   
+        return f"{self.name}"  
 
+class Luxury_Booking(models.Model):
+    lux_car = models.ForeignKey(luxury_car, on_delete=models.CASCADE, related_name='luxury_bookings')
+    pick_up_date = models.DateField()
+    drop_off_date = models.DateField()
+
+    def __str__(self):
+        return f"Booking for {self.lux_car.name} from {self.pick_up_date} to {self.drop_off_date}"
 
 class economy_reservation(models.Model):
     car = models.ForeignKey(economy_car, on_delete=models.CASCADE , related_name='items')

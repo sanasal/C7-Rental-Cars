@@ -5,7 +5,7 @@ from django.contrib.auth import login , logout
 #CSRF protection
 from django.views.decorators.csrf import csrf_protect
 from . import forms
-from .models import customers_data, all_car, premium_car, categories_reservation , luxury_car , economy_car, Cart, economy_reservation , luxury_reservation, premium_reservation
+from .models import customers_data, all_car, premium_car, categories_reservation , luxury_car , economy_car, Cart, economy_reservation , luxury_reservation, premium_reservation , Booking , Luxury_Booking , Premium_Booking , Categories_Booking
 from django.http import HttpResponse
 from django.template import Template , Context
 from django.http import JsonResponse
@@ -15,6 +15,8 @@ from django.conf import settings
 from django.views import View
 import os
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+from .delete_expired_date import delete_expired_drop_offs
 
 # The library needs to be configured with your account's secret key.
 # Ensure the key is kept out of any version control system you might be using.
@@ -138,6 +140,52 @@ def add_customers_data(request):
             instance.writer = request.user
             instance.user = request.user
             instance.save()
+
+            # Create a booking entry to economy cars
+            car_name = instance.cars  # Assuming 'cars' field contains the car name
+            car = economy_car.objects.filter(name=car_name).first()
+            if car:
+                Booking.objects.create(
+                    car=car,
+                    pick_up_date=instance.pick_up_date ,
+                    drop_off_date=instance.drop_off_date
+                )
+
+            # Create a booking entry to luxury cars
+            lux_car_name = instance.cars  # Assuming 'cars' field contains the car name
+            lux_car = luxury_car.objects.filter(name=lux_car_name).first()
+            if lux_car:
+                Luxury_Booking.objects.create(
+                    lux_car=lux_car,
+                    pick_up_date=instance.pick_up_date ,
+                    drop_off_date=instance.drop_off_date
+                )
+
+            # Create a booking entry to premium cars
+            pre_car_name = instance.cars  # Assuming 'cars' field contains the car name
+            pre_car = premium_car.objects.filter(name=pre_car_name).first()
+            if pre_car:
+                Premium_Booking.objects.create(
+                    pre_car=pre_car,
+                    pick_up_date=instance.pick_up_date ,
+                    drop_off_date=instance.drop_off_date
+                )
+
+            # Create a booking entry to categories cars
+            cate_car_name = instance.cars  # Assuming 'cars' field contains the car name
+            cate_car = all_car.objects.filter(name=cate_car_name).first()
+            if cate_car:
+                Categories_Booking.objects.create(
+                    cate_car=cate_car,
+                    pick_up_date=instance.pick_up_date ,
+                    drop_off_date=instance.drop_off_date
+                )
+
+            # Delete expired bookings
+            delete_expired_drop_offs(Booking)
+            delete_expired_drop_offs(Luxury_Booking)
+            delete_expired_drop_offs(Premium_Booking)
+            delete_expired_drop_offs(Categories_Booking)
             
             # Fetch the latest price after saving the form data
             customer_book_price = customers_data.objects.filter(user=request.user).order_by('-id').first()

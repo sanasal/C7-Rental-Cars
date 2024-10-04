@@ -181,7 +181,29 @@
                                         <i class="fa fa-road text-dark"></i> <span class="text-body ms-1">{{car.miles}}</span>
                                     </div>
                                 </div>
-                                <button class="btn add btn-dark rounded-pill d-flex justify-content-center py-3" value="{{ car.id }}">Book Now</button>
+                                <div>
+                                    {% if car.categories_bookings.all %}
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">from</th>
+                                            <th scope="col">until</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {% for booking in car.categories_bookings.all %}
+                                            <tr>
+                                                <th scope="row">booked</th>
+                                                <td>{{ booking.pick_up_date|date:"M. d"}}</td>
+                                                <td>{{ booking.drop_off_date|date:"M. d"}}</td>
+                                            </tr>
+                                          {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% endif %}
+                                </div>
+                                <button onclick="goToManage()" class="btn add btn-dark rounded-pill d-flex justify-content-center py-3" value="{{ car.id }}">Book Now</button>
                             </div>
                         </div>
                     </div>
@@ -660,6 +682,13 @@
             window.location.reload('https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net/Manage_Your_Book/'); 
         }, 200);
         } 
+
+        function goToManage() {
+            // Replace 'https://example.com/another-page' with the actual URL of the target page
+            setTimeout(function() {
+                window.location.href = 'https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net/Manage_Your_Book/';
+            }, 100);
+        }
     </script>
     
 
