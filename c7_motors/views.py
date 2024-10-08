@@ -67,9 +67,6 @@ def feature(request):
 def about(request):
     return render(request , 'about.html')
 
-def success(request):
-    return render(request , 'success.html')
-
 @login_required(login_url='/log_in/')
 def economy(request):
     economycars = economy_car.objects.all()
@@ -341,3 +338,20 @@ def delete_item4(request):
         cart_items = categories_reservation.objects.filter(cart=cart , cate_car_id =car_id) 
         cart_items.delete()
     return JsonResponse('Delete Item Done' , safe= False)
+
+def send_book_data_after_success(request):
+    customer_book_data = None
+    if request.user.is_authenticated:
+        print(f"Authenticated user: {request.user}")  # Check user authentication
+        customer_book_data = customers_data.objects.filter(user=request.user).order_by('-id').first()
+        print(customer_book_data)  # Check if customer data is being retrieved
+    else:
+        print('error')
+    context = {
+       'customer_book_data': customer_book_data
+    }
+    print(customer_book_data) 
+    return render(request, 'success.html', context)
+    
+
+    

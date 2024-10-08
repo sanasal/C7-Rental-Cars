@@ -21,6 +21,8 @@ class customers_data(models.Model):
     nationality = models.TextField(max_length=300, default='', blank=True)
     mobile_phone = models.TextField(blank=True, default='')
     price =models.IntegerField(null=True)
+    pick_up_location = models.TextField(max_length=300, default='', blank=True)
+    drop_off_location = models.TextField(max_length=300, default='', blank=True)
     pick_up_date = models.DateField(null=True, blank=True)
     pick_up_time = models.TimeField(null=True, blank=True)
     drop_off_date = models.DateField(null=True, blank=True)

@@ -35,5 +35,5 @@ urlpatterns = [
     path('delete3/' , views.delete_item3),
     path('delete4/' , views.delete_item4),
     path('add_data/' , views.add_customers_data , name = 'add_customers_data'),
-    path('C7_payment_success/', views.success, name='success'),
+    path('C7_payment_success/', views.send_book_data_after_success, name='success'),
 ]
