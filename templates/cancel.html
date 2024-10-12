@@ -27,8 +27,10 @@
     <!-- Template Stylesheet -->
     <link href="{% static 'css/style.css'%}" rel="stylesheet">
 
-    <!-- Pyament Success Styling -->
+    <!-- Payment cancel style --> 
     <style>
+        ._failed{ border-bottom: solid 4px red !important; }
+        ._failed i{  color:red !important;  }
         ._success {
             box-shadow: 0 15px 25px #00000019;
             padding: 45px;
@@ -60,9 +62,7 @@
     </style>
 </head>
 <body>
-    <!--Payment Success -->
-
-
+    <!--Payment Cancel -->
             <!-- Spinner Start -->
             <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
                 <div class="spinner-border" style="width: 3rem; height: 3rem;color:rgb(255, 215, 0)" role="status">
@@ -134,74 +134,63 @@
             </div>
     <!-- Navbar & Hero End -->
 
-    <!-- Payment Successful -->
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-5">
-                <div class="message-box _success">
-                     <i class="fa fa-check-circle" aria-hidden="true"></i>
-                    <h2> Your payment was successful </h2>
-                   <p> Thank you for your payment.</p>      
+                <div class="message-box _success _failed">
+                     <i class="fa fa-times-circle" aria-hidden="true"></i>
+                    <h2>Your payment failed</h2>
+                    <p>Try again <button type="button" style="background-color: rgb(255, 0, 0);color:rgb(255, 255, 255);margin-left:80%" id="checkout-button" class="btn rounded-pill d-flex justify-content-center">Pay</button></p> 
+                </div> 
             </div> 
         </div> 
-    </div> 
+    </div>
 
-    <!-- Send Data by EmailJS -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script>
-        (function() {
-            // https://dashboard.emailjs.com/admin/account
-            emailjs.init({
-                publicKey: "sLqDm49VYqLQbcqrV",
-            });
-        })();
-    </script>
+    <!-- Checkout Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
-            // Fetch the customer data from the context
-            var customerData = {
-                name: "{{ customer_book_data.name|default:'' }}",
-                email: "{{ customer_book_data.email|default:'' }}",
-                nationality: "{{ customer_book_data.nationality|default:'' }}",
-                mobile_phone: "{{ customer_book_data.mobile_phone|default:'' }}",
-                cars: "{{ customer_book_data.cars|default:'' }}",
-                price: "{{ customer_book_data.price|default:'' }}",
-                pick_up_date: "{{ customer_book_data.pick_up_date|default:'' }}",
-                pick_up_time: "{{ customer_book_data.pick_up_time|default:'' }}",
-                drop_off_date: "{{ customer_book_data.drop_off_date|default:'' }}",
-                drop_off_time: "{{ customer_book_data.drop_off_time|default:'' }}",
-                pick_up_location: "{{ customer_book_data.pick_up_location|default:'' }}",  // New field
-                drop_off_location: "{{ customer_book_data.drop_off_location|default:'' }}"  // New field
-            };
+        // Initialize Stripe with the publishable key passed from Django
+        var stripe = Stripe('{{ STRIPE_PUBLISHABLE_KEY }}');  
     
-            // Prepare the data for email
-            var emailParams = {
-                name: customerData.name,
-                email: customerData.email,
-                nationality: customerData.nationality,
-                mobile_phone: customerData.mobile_phone,
-                cars: customerData.cars,
-                price: customerData.price,
-                pick_up_location: customerData.pick_up_location,
-                drop_off_location: customerData.drop_off_location,
-                pick_up_date: customerData.pick_up_date,
-                drop_off_date: customerData.drop_off_date,
-                pick_up_time: customerData.pick_up_time,
-                drop_off_time: customerData.drop_off_time
-            };
-            
+        // Assign total_price from the Django template to a JavaScript variable
+        var totalPrice = "{{ total_price }}";  // This will be output as a string
     
-            // Use EmailJS to send the email
-            emailjs.send('service_bxwmkdj', 'template_xt5y7l5', emailParams)
-                .then(function(response) {
-                    console.log('SUCCESS!', response.status, response.text);
-                    console.log(customerData);
-                }, function(error) {
-                    console.log('FAILED...', error);
-                });
+        // Convert the string to a number (in case it's a decimal or string)
+        var totalPriceFloat = parseFloat(totalPrice);
+    
+        // Make sure the checkout button is clicked before starting the Stripe process
+        var checkoutButton = document.getElementById('checkout-button');
+    
+        checkoutButton.addEventListener('click', function() {
+            // Send a POST request to create the checkout session
+            fetch('/create-checkout-session/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',  // Include CSRF token for security
+                },
+                body: JSON.stringify({
+                    total_price: totalPriceFloat  // Pass the correctly parsed total price as a number
+                }),
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(session) {
+                // Redirect to the Stripe Checkout session
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .then(function(result) {
+                if (result.error) {
+                    // If there's an error, alert the user
+                    alert(result.error.message);
+                }
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
         });
     </script>
-    
 
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

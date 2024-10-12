@@ -36,4 +36,6 @@ urlpatterns = [
     path('delete4/' , views.delete_item4),
     path('add_data/' , views.add_customers_data , name = 'add_customers_data'),
     path('C7_payment_success/', views.send_book_data_after_success, name='success'),
+    path('cancel/', views.payment_cancel, name='payment-cancel'),
+    path('create-checkout-session/', views.create_checkout_session, name='create-checkout-session')
 ]

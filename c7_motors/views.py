@@ -8,7 +8,7 @@ from . import forms
 from .models import customers_data, all_car, premium_car, categories_reservation , luxury_car , economy_car, Cart, economy_reservation , luxury_reservation, premium_reservation , Booking , Luxury_Booking , Premium_Booking , Categories_Booking
 from django.http import HttpResponse
 from django.template import Template , Context
-from django.http import JsonResponse
+from django.http import JsonResponse , HttpResponseBadRequest
 import json  
 import stripe
 from django.conf import settings
@@ -17,41 +17,80 @@ import os
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from .delete_expired_date import delete_expired_drop_offs
+from django.views.decorators.http import require_http_methods
 
-# The library needs to be configured with your account's secret key.
-# Ensure the key is kept out of any version control system you might be using.
 stripe.api_key = "sk_test_51PaI022KAcGaNCQ2zxyLLDug4axW1o3D0coeBs0LzlcTWi5TljeppgPuaJXU18veEEF4RloZCEd8ThPTGV1jxJUd00TOd9WmIX"
 
-# This is your Stripe CLI webhook secret for testing your endpoint locally.
-endpoint_secret = 'whsec_ae9d87049f3f9e8712d278b26e9f02b2f9b0dd42f5777d830889d71341aa5aec'
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # views.py
 
-import json
-import os
-import stripe
+@csrf_exempt  # You may need to exempt this view from CSRF, or handle it with a middleware
+def create_checkout_session(request):
+    if request.method == 'POST':
+        try:
+            # Get the request data
+            data = json.loads(request.body)
 
-from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-from django.shortcuts import render
+            # Get the latest customer data for the logged-in user
+            customer = customers_data.objects.filter(user=request.user).order_by('-id').first()
 
-from django.http import JsonResponse, HttpResponseBadRequest
-from django.views.decorators.http import require_http_methods
-from django.conf import settings
+            # Handle the case where no customer data is found
+            if not customer:
+                return JsonResponse({'error': 'No customer data found.'}, status=400)
 
+            # Calculate the total amount in cents (Stripe expects amount in the smallest currency unit)
+            total_amount = int(customer.price * 100)  # Assuming price is in dollars
+
+            # Create the Stripe Checkout session
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[{
+                    'price_data': {
+                        'currency': 'usd',  # Adjust currency if needed
+                        'product_data': {
+                            'name': 'Car Rental',  # The product description shown on Stripe Checkout
+                        },
+                        'unit_amount': total_amount,  # The amount in cents
+                    },
+                    'quantity': 1,
+                }],
+                mode='payment',  # Single full payment mode
+                success_url='http://127.0.0.1:8000/C7_payment_success/',  # Adjust the URL to your success page
+                cancel_url='http://127.0.0.1:8000/cancel/',  # Adjust the URL to your cancel page
+            )
+
+            # Return the session ID as JSON response
+            return JsonResponse({'id': checkout_session.id})
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
 
 def home(request):
     premiumcars = premium_car.objects.all()
-    luxurycars= luxury_car.objects.all()
+    luxurycars = luxury_car.objects.all()
     economycars = economy_car.objects.all()
     cars = all_car.objects.all()
     context = {
-      'premium_car' : premiumcars ,
-      'luxury_car' : luxurycars,
-      'economy_car' : economycars,
-      'all_car': cars,}   
-    return render(request, 'home.html' , context )
+        'premium_car': premiumcars,
+        'luxury_car': luxurycars,
+        'economy_car': economycars,
+        'all_car': cars,
+    }
+    return render(request, 'home.html', context)
+
+def payment_cancel(request):
+    customer = customers_data.objects.filter(user=request.user).order_by('-id').first()
+    if customer:
+        stripe_total_price = customer.price  # Assuming the price is in dollars
+    else:
+        stripe_total_price = 0
+
+    context = {
+        'stripe_total_price':stripe_total_price,
+        'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLIC_KEY,
+    }
+    return render(request , 'cancel.html' , context)
 
 
 @login_required(login_url='/log_in/')
@@ -232,6 +271,12 @@ def reservation(request):
         cartitems2 = cart.cartitems2.all()
         cartitems3 = cart.cartitems3.all()
         cartitems4 = cart.cartitems4.all()
+
+    customer = customers_data.objects.filter(user=request.user).order_by('-id').first()
+    if customer:
+        stripe_total_price = customer.price  # Assuming the price is in dollars
+    else:
+        stripe_total_price = 0
     
     context = {
         'cart': cart,
@@ -240,7 +285,9 @@ def reservation(request):
         'items3': cartitems3,
         'items4': cartitems4,
         'customer_book_price': customer_book_price,
-        'total_price': total_price
+        'total_price': total_price,
+        'stripe_total_price':stripe_total_price,
+        'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLIC_KEY,
     }
 
     return render(request, 'reservation.html', context)
@@ -352,6 +399,3 @@ def send_book_data_after_success(request):
     }
     print(customer_book_data) 
     return render(request, 'success.html', context)
-    
-
-    

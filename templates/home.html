@@ -103,7 +103,6 @@
                                 </div>
                             </div>
                             <a href="{% url 'c7_motors:contact_us' %}" class="nav-item nav-link">Contact</a>
-                            <a href="https://book.stripe.com/test_7sI8xi52DdTz6liaEE" class="nav-item nav-link">Payment</a>
                         </div>
                         {% if user.is_authenticated %}
                         <form action="/log_out/" method="post" class="main_nav">
@@ -690,7 +689,7 @@
             }, 100);
         }
     </script>
-    
+
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js'%}"></script>
