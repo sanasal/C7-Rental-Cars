@@ -406,7 +406,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
-                                                        <button id="checkout-button" class="btn btn-dark w-100 py-2" type="submit" style="display: none;">Pay <span id="total-price-display">{{ total_price }}</span>  Now</button>
+                                                        <button id="checkout-button" class="btn btn-dark w-100 py-2" style="display: none;" type="button">Pay <span id="total-price-display">{{ total_price }}</span>  Now</button>
                                                         <button id="liveToastBtn" class="btn btn-dark w-100 py-2" type="submit">Book Now</button>
                                                     </div>
                                                 </div>
@@ -661,7 +661,7 @@
                             bookButton.style.display = 'none';
                             // Show the 'pay_button'
                             payButton.style.display = 'block';
-                        }, 300);
+                        }, 200);
                     } else {
                         console.error('Error:', response.errors);
                     }

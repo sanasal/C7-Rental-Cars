@@ -202,7 +202,7 @@
                                     </table>
                                     {% endif %}
                                 </div>
-                                <button onclick="goToManage()" class="btn add btn-dark rounded-pill d-flex justify-content-center py-3" value="{{ car.id }}">Book Now</button>
+                                <button onclick="goToManage()" id="add" type="button" value="{{ car.id }}" class="btn btn-dark add rounded-pill d-flex justify-content-center py-3">Book Now</button>
                             </div>
                         </div>
                     </div>
@@ -677,11 +677,7 @@
         .catch(error =>{
             console.log(error)
         })
-        setTimeout(function() {
-            window.location.reload('https://c7-rental-cars-btcpdaf3eqg7czab.uaenorth-01.azurewebsites.net/Manage_Your_Book/'); 
-        }, 200);
         } 
-
         function goToManage() {
             // Replace 'https://example.com/another-page' with the actual URL of the target page
             setTimeout(function() {
